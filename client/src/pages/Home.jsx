@@ -785,7 +785,7 @@ const Home = () => {
               className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 text-center border border-white/20 hover:bg-white/20 transition-all duration-300"
             >
               <div className="text-5xl mx-auto mb-4 text-[#5bbb7b] flex justify-center items-center">
-                
+                <FaUsers />
               </div>
               <h3 className="text-4xl font-bold text-white mb-2">24/7</h3>
               <p className="text-white/80 font-medium">Support Available</p>
