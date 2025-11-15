@@ -45,9 +45,42 @@ export const AuthProvider = ({ children }) => {
 
   // Login with Google
   const googleProvider = new GoogleAuthProvider();
-  const googleLogin = () => {
+  
+  const googleLogin = async () => {
     setLoading(true);
-    return signInWithPopup(auth, googleProvider);
+    console.log('Initiating Google login...');
+    
+    try {
+      // Configure Google provider for better UX
+      googleProvider.setCustomParameters({
+        prompt: 'select_account',
+        hd: '' // Allow any domain
+      });
+      
+      // Add required scopes
+      googleProvider.addScope('email');
+      googleProvider.addScope('profile');
+      
+      console.log('Firebase Auth instance:', auth);
+      console.log('Google Provider configured:', googleProvider);
+      
+      const result = await signInWithPopup(auth, googleProvider);
+      console.log('Google login successful:', result.user);
+      console.log('User email:', result.user.email);
+      console.log('User display name:', result.user.displayName);
+      
+      return result;
+    } catch (error) {
+      console.error('Google login error in AuthContext:', error);
+      console.error('Error details:', {
+        code: error.code,
+        message: error.message,
+        customData: error.customData
+      });
+      throw error;
+    } finally {
+      setLoading(false);
+    }
   };
 
   // Update user profile (name, photo)

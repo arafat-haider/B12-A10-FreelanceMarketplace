@@ -79,12 +79,11 @@ const JobDetails = () => {
       <div className="container mx-auto max-w-4xl">
         <div className="card bg-base-100 shadow-2xl">
           {/* Cover Image */}
-          <figure className="h-72">
-            <img
-              src={job.coverImage || 'https://i.ibb.co/f4kTLT7/job-placeholder.jpg'}
-              alt={job.title}
-              className="w-full h-full object-cover"
-            />
+          <figure className="h-72 bg-gradient-to-br from-[#1f4b3f] to-[#2d6b57] flex items-center justify-center">
+            <div className="text-white text-center">
+              <div className="text-6xl font-bold mb-4">{job.category?.charAt(0) || 'J'}</div>
+              <div className="text-xl opacity-75">{job.category || 'Job Category'}</div>
+            </div>
           </figure>
 
           <div className="card-body">

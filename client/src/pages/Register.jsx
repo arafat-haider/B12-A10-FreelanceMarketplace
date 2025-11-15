@@ -72,8 +72,22 @@ const Register = () => {
         navigate('/');
       })
       .catch((error) => {
-        console.error(error);
-        toast.error('Google registration failed');
+        console.error('Google Login Error:', error);
+        console.error('Error Code:', error.code);
+        console.error('Error Message:', error.message);
+        
+        // Provide specific error messages
+        if (error.code === 'auth/popup-blocked') {
+          toast.error('Popup was blocked. Please allow popups for this site.');
+        } else if (error.code === 'auth/popup-closed-by-user') {
+          toast.error('Login cancelled. Please try again.');
+        } else if (error.code === 'auth/cancelled-popup-request') {
+          toast.error('Another login attempt is in progress.');
+        } else if (error.code === 'auth/network-request-failed') {
+          toast.error('Network error. Check your internet connection.');
+        } else {
+          toast.error(`Google registration failed: ${error.message}`);
+        }
       });
   };
 
@@ -81,7 +95,6 @@ const Register = () => {
     <section>
       <div className="flex bg-white items-center justify-center px-4 py-10 sm:px-6 sm:py-16 lg:px-8 lg:py-24">
         <div className="xl:mx-auto xl:w-full shadow-md p-8 xl:max-w-sm 2xl:max-w-md rounded-lg">
-          <div className="mb-2 flex justify-center"></div>
           <h2 className="text-center text-2xl font-bold leading-tight text-black">
             Create your account
           </h2>
@@ -89,7 +102,7 @@ const Register = () => {
             Already have an account?{' '}
             <Link 
               to="/login"
-              className="font-semibold text-black hover:underline"
+              className="font-semibold text-[#1f4b3f] hover:underline hover:text-[#5bbb7b] transition-colors duration-200"
             >
               Sign in here
             </Link>
@@ -130,7 +143,7 @@ const Register = () => {
               </div>
               <div>
                 <label className="text-base font-medium text-gray-900">
-                  Profile Photo URL (Optional)
+                  Profile Photo URL *
                 </label>
                 <div className="mt-2">
                   <input
@@ -140,8 +153,12 @@ const Register = () => {
                     value={formData.photoURL}
                     onChange={handleChange}
                     className="flex h-10 w-full rounded-md border border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
+                    required
                   />
                 </div>
+                <p className="mt-1 text-xs text-gray-500">
+                  Please provide a valid profile photo URL
+                </p>
               </div>
               <div>
                 <label className="text-base font-medium text-gray-900">
@@ -164,7 +181,7 @@ const Register = () => {
               </div>
               <div>
                 <button
-                  className="inline-flex w-full items-center justify-center rounded-md bg-black px-3.5 py-2.5 font-semibold leading-7 text-white hover:bg-black/80"
+                  className="inline-flex w-full items-center justify-center rounded-md bg-[#1f4b3f] px-3.5 py-2.5 font-semibold leading-7 text-white hover:bg-[#1f4b3f]/80 transition-colors duration-200"
                   type="submit"
                 >
                   Create Account

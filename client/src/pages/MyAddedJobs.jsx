@@ -76,11 +76,8 @@ const MyAddedJobs = () => {
                   <tr key={job._id}>
                     <td>
                       <div className="avatar">
-                        <div className="w-16 h-16 rounded">
-                          <img
-                            src={job.coverImage || 'https://i.ibb.co/f4kTLT7/job-placeholder.jpg'}
-                            alt={job.title}
-                          />
+                        <div className="w-16 h-16 rounded bg-gradient-to-br from-[#1f4b3f] to-[#2d6b57] flex items-center justify-center">
+                          <span className="text-white font-bold text-lg">{job.category?.charAt(0) || 'J'}</span>
                         </div>
                       </div>
                     </td>

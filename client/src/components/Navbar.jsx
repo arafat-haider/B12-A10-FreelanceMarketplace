@@ -58,6 +58,19 @@ const Navbar = () => {
               </NavLink>
               
               <NavLink 
+                to="/about" 
+                className={({ isActive }) => 
+                  `px-5 py-3 rounded-xl text-sm font-semibold transition-all duration-300 relative overflow-hidden ${
+                    isActive 
+                      ? 'bg-[#2d6b57] text-white shadow-lg' 
+                      : 'text-white hover:bg-[#2d6b57] hover:shadow-lg hover:scale-105'
+                  }`
+                }
+              >
+                <span className="relative z-10">About</span>
+              </NavLink>
+
+              <NavLink 
                 to="/all-jobs" 
                 className={({ isActive }) => 
                   `px-5 py-3 rounded-xl text-sm font-semibold transition-all duration-300 relative overflow-hidden ${
@@ -68,6 +81,19 @@ const Navbar = () => {
                 }
               >
                 <span className="relative z-10">Browse Jobs</span>
+              </NavLink>
+
+              <NavLink 
+                to="/contact" 
+                className={({ isActive }) => 
+                  `px-5 py-3 rounded-xl text-sm font-semibold transition-all duration-300 relative overflow-hidden ${
+                    isActive 
+                      ? 'bg-[#2d6b57] text-white shadow-lg' 
+                      : 'text-white hover:bg-[#2d6b57] hover:shadow-lg hover:scale-105'
+                  }`
+                }
+              >
+                <span className="relative z-10">Contact</span>
               </NavLink>
 
               {user && (
@@ -134,11 +160,9 @@ const Navbar = () => {
                 
                 <div className="relative group">
                   <button className="flex items-center space-x-3 p-2 rounded-xl hover:bg-[#2d6b57] transition-all duration-300 hover:shadow-lg">
-                    <img
-                      className="w-10 h-10 rounded-full ring-2 ring-white object-cover shadow-lg"
-                      src={user.photoURL || 'https://i.ibb.co/hR5FcR3/user.png'}
-                      alt={user.displayName || 'User'}
-                    />
+                    <div className="w-10 h-10 rounded-full ring-2 ring-white shadow-lg bg-[#5bbb7b] flex items-center justify-center text-white font-bold">
+                      {user.displayName?.charAt(0) || user.email?.charAt(0) || 'U'}
+                    </div>
                     <div className="hidden xl:block text-left">
                       <p className="text-sm font-semibold text-white">{user.displayName || 'User'}</p>
                       <p className="text-xs text-white/70">Online</p>
@@ -147,11 +171,9 @@ const Navbar = () => {
                   <div className="absolute top-full right-0 mt-2 w-72 bg-white rounded-2xl shadow-2xl py-4 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform translate-y-2 group-hover:translate-y-0 border border-gray-100">
                     <div className="px-6 py-3 border-b border-gray-100">
                       <div className="flex items-center gap-3">
-                        <img
-                          className="w-12 h-12 rounded-full object-cover"
-                          src={user.photoURL || 'https://i.ibb.co/hR5FcR3/user.png'}
-                          alt={user.displayName || 'User'}
-                        />
+                        <div className="w-12 h-12 rounded-full bg-[#5bbb7b] flex items-center justify-center text-white font-bold text-lg">
+                          {user.displayName?.charAt(0) || user.email?.charAt(0) || 'U'}
+                        </div>
                         <div>
                           <p className="font-bold text-gray-800">{user.displayName || 'User'}</p>
                           <p className="text-sm text-gray-500">{user.email}</p>
@@ -280,11 +302,9 @@ const Navbar = () => {
               {user ? (
                 <div className="border-t border-gray-200 pt-4 mt-4">
                   <div className="flex items-center gap-3 px-4 mb-4">
-                    <img
-                      className="w-10 h-10 rounded-full object-cover"
-                      src={user.photoURL || 'https://i.ibb.co/hR5FcR3/user.png'}
-                      alt={user.displayName || 'User'}
-                    />
+                    <div className="w-10 h-10 rounded-full bg-[#5bbb7b] flex items-center justify-center text-white font-bold">
+                      {user.displayName?.charAt(0) || user.email?.charAt(0) || 'U'}
+                    </div>
                     <div>
                       <p className="font-semibold text-gray-800">{user.displayName || 'User'}</p>
                       <p className="text-xs text-gray-500">{user.email}</p>

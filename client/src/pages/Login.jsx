@@ -49,8 +49,22 @@ const Login = () => {
         navigate(from, { replace: true });
       })
       .catch((error) => {
-        console.error(error);
-        toast.error('Google login failed');
+        console.error('Google Login Error:', error);
+        console.error('Error Code:', error.code);
+        console.error('Error Message:', error.message);
+        
+        // Provide specific error messages
+        if (error.code === 'auth/popup-blocked') {
+          toast.error('Popup was blocked. Please allow popups for this site.');
+        } else if (error.code === 'auth/popup-closed-by-user') {
+          toast.error('Login cancelled. Please try again.');
+        } else if (error.code === 'auth/cancelled-popup-request') {
+          toast.error('Another login attempt is in progress.');
+        } else if (error.code === 'auth/network-request-failed') {
+          toast.error('Network error. Check your internet connection.');
+        } else {
+          toast.error(`Google login failed: ${error.message}`);
+        }
       });
   };
 
@@ -66,7 +80,7 @@ const Login = () => {
             Don't have an account?{' '}
             <Link 
               to="/register"
-              className="font-semibold text-black hover:underline"
+              className="font-semibold text-[#1f4b3f] hover:underline hover:text-[#5bbb7b] transition-colors duration-200"
             >
               Create a free account
             </Link>
@@ -95,7 +109,7 @@ const Login = () => {
                     Password
                   </label>
                   <a
-                    className="text-sm font-semibold text-black hover:underline"
+                    className="text-sm font-semibold text-[#1f4b3f] hover:underline hover:text-[#5bbb7b] transition-colors duration-200"
                     href="#"
                   >
                     Forgot password?
@@ -115,7 +129,7 @@ const Login = () => {
               </div>
               <div>
                 <button
-                  className="inline-flex w-full items-center justify-center rounded-md bg-black px-3.5 py-2.5 font-semibold leading-7 text-white hover:bg-black/80"
+                  className="inline-flex w-full items-center justify-center rounded-md bg-[#1f4b3f] px-3.5 py-2.5 font-semibold leading-7 text-white hover:bg-[#1f4b3f]/80 transition-colors duration-200"
                   type="submit"
                 >
                   Get started

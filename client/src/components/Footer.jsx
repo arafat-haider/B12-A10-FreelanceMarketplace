@@ -25,29 +25,19 @@ const Footer = () => {
           {/* Quick Links */}
           <nav>
             <h6 className="footer-title">Quick Links</h6>
+            <Link to="/about" className="link link-hover">About Us</Link>
+            <Link to="/contact" className="link link-hover">Contact</Link>
             <Link to="/all-jobs" className="link link-hover">All Jobs</Link>
             <Link to="/add-job" className="link link-hover">Post a Job</Link>
-            <Link to="/my-added-jobs" className="link link-hover">My Jobs</Link>
-            <Link to="/my-accepted-tasks" className="link link-hover">My Tasks</Link>
           </nav>
 
-          {/* Social Links */}
+          {/* Support */}
           <nav>
-            <h6 className="footer-title">Follow Us</h6>
-            <div className="flex gap-4 mt-2">
-              <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="btn btn-circle btn-sm btn-ghost">
-                <FaFacebook className="text-xl" />
-              </a>
-              <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="btn btn-circle btn-sm btn-ghost">
-                <FaXTwitter className="text-xl" />
-              </a>
-              <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="btn btn-circle btn-sm btn-ghost">
-                <FaLinkedin className="text-xl" />
-              </a>
-              <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="btn btn-circle btn-sm btn-ghost">
-                <FaGithub className="text-xl" />
-              </a>
-            </div>
+            <h6 className="footer-title">Support</h6>
+            <Link to="/my-added-jobs" className="link link-hover">My Jobs</Link>
+            <Link to="/my-accepted-tasks" className="link link-hover">My Tasks</Link>
+            <span className="text-gray-500">Help Center</span>
+            <span className="text-gray-500">Privacy Policy</span>
           </nav>
         </div>
 

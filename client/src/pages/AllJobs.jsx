@@ -55,12 +55,11 @@ const AllJobs = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {jobs.map((job) => (
               <div key={job._id} className="card bg-base-100 shadow-xl h-full">
-                <figure className="h-48">
-                  <img
-                    src={job.coverImage || 'https://i.ibb.co/f4kTLT7/job-placeholder.jpg'}
-                    alt={job.title}
-                    className="w-full h-full object-cover"
-                  />
+                <figure className="h-48 bg-gradient-to-br from-[#1f4b3f] to-[#2d6b57] flex items-center justify-center">
+                  <div className="text-white text-center">
+                    <div className="text-3xl font-bold mb-2">{job.category?.charAt(0) || 'J'}</div>
+                    <div className="text-sm opacity-75">{job.category || 'Job'}</div>
+                  </div>
                 </figure>
                 <div className="card-body">
                   <h3 className="card-title text-lg">{job.title}</h3>

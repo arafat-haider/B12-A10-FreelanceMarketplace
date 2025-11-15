@@ -80,11 +80,8 @@ const MyAcceptedTasks = () => {
                   <tr key={task._id}>
                     <td>
                       <div className="avatar">
-                        <div className="w-16 h-16 rounded">
-                          <img
-                            src={task.coverImage || 'https://i.ibb.co/f4kTLT7/job-placeholder.jpg'}
-                            alt={task.jobTitle}
-                          />
+                        <div className="w-16 h-16 rounded bg-gradient-to-br from-[#1f4b3f] to-[#2d6b57] flex items-center justify-center">
+                          <span className="text-white font-bold text-lg">{task.category?.charAt(0) || 'T'}</span>
                         </div>
                       </div>
                     </td>
