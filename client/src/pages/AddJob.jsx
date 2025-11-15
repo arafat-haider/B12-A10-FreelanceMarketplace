@@ -7,6 +7,7 @@ import toast from 'react-hot-toast';
 import { motion } from 'framer-motion';
 import { FaBriefcase, FaUser, FaTags, FaFileAlt, FaEnvelope, FaPaperPlane } from 'react-icons/fa';
 
+
 const AddJob = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
@@ -19,6 +20,7 @@ const AddJob = () => {
   });
   
   const [isSubmitting, setIsSubmitting] = useState(false);
+
 
   // Handle input change
   const handleChange = (e) => {
@@ -69,7 +71,9 @@ const AddJob = () => {
       });
       console.log('Job posted successfully:', response.data);
       toast.success('Job posted successfully! 🎉');
-      navigate('/my-added-jobs');
+      setTimeout(() => {
+        navigate('/my-added-jobs');
+      }, 2000);
     } catch (error) {
       console.error('Error posting job:', error);
       
@@ -150,6 +154,7 @@ const AddJob = () => {
 
           {/* Form Content */}
           <div className="p-8 md:p-12">
+
 
             <form onSubmit={handleSubmit} className="space-y-8">
               {/* Grid Layout for Better Organization */}

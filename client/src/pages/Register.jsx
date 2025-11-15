@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import toast from 'react-hot-toast';
 
+
 const Register = () => {
   const { registerUser, updateUserProfile, googleLogin } = useAuth();
   const navigate = useNavigate();
@@ -13,6 +14,8 @@ const Register = () => {
     photoURL: '',
     password: ''
   });
+
+
 
   const handleChange = (e) => {
     setFormData({
@@ -53,14 +56,14 @@ const Register = () => {
       })
       .then(() => {
         toast.success('Registration successful!');
-        navigate('/');
+        setTimeout(() => navigate('/'), 1500);
       })
       .catch((error) => {
         console.error(error);
         if (error.code === 'auth/email-already-in-use') {
           toast.error('Email already in use');
         } else {
-          toast.error('Registration failed. Please try again');
+        toast.error('Registration failed. Please try again');
         }
       });
   };
@@ -108,6 +111,7 @@ const Register = () => {
             </Link>
           </p>
           <form className="mt-8" onSubmit={handleSubmit}>
+            
             <div className="space-y-5">
               <div>
                 <label className="text-base font-medium text-gray-900">

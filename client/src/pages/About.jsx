@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { FaHandshake, FaUsers, FaShieldAlt, FaRocket } from 'react-icons/fa';
 
+
 const About = () => {
   return (
     <div className="min-h-screen bg-white">
@@ -57,6 +58,36 @@ const About = () => {
       </section>
 
       <section className="py-16 bg-gray-50">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold mb-4">Platform Notifications</h2>
+            <p className="text-lg text-gray-600">
+              Stay informed with our modern alert system
+            </p>
+          </div>
+          
+          <div className="max-w-2xl mx-auto space-y-4">
+            <Alert 
+              type="success" 
+              message="Success - Your profile has been updated successfully!" 
+            />
+            <Alert 
+              type="info" 
+              message="Info - New jobs matching your skills are available." 
+            />
+            <Alert 
+              type="warning" 
+              message="Warning - Please complete your profile to receive job recommendations." 
+            />
+            <Alert 
+              type="error" 
+              message="Error - Unable to connect to server. Please try again later." 
+            />
+          </div>
+        </div>
+      </section>
+
+      <section className="py-16">
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-3xl font-bold mb-8">Ready to Get Started?</h2>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { FiSearch, FiMenu, FiX } from 'react-icons/fi';
+import { FaClipboardList, FaBriefcase, FaSignOutAlt, FaPlus } from 'react-icons/fa';
 import { useAuth } from '../context/AuthContext.jsx';
 
 const Navbar = () => {
@@ -153,8 +154,9 @@ const Navbar = () => {
               <>
                 <Link 
                   to="/add-job" 
-                  className="px-6 py-3 bg-gradient-to-r from-[#5bbb7b] to-[#4aa66a] hover:from-[#4aa66a] hover:to-[#3d9558] text-white text-sm font-semibold rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105"
+                  className="px-6 py-3 bg-gradient-to-r from-[#5bbb7b] to-[#4aa66a] hover:from-[#4aa66a] hover:to-[#3d9558] text-white text-sm font-semibold rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 flex items-center gap-2"
                 >
+                  <FaPlus className="text-sm" />
                   Become a Seller
                 </Link>
                 
@@ -189,14 +191,18 @@ const Navbar = () => {
                         to="/my-added-jobs" 
                         className="flex items-center gap-3 px-6 py-3 text-sm text-gray-700 hover:bg-gradient-to-r hover:from-green-50 hover:to-emerald-50 hover:text-green-600 transition-all duration-200"
                       >
-                        <span className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">📋</span>
+                        <span className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
+                          <FaClipboardList className="text-blue-600 text-sm" />
+                        </span>
                         My Jobs Dashboard
                       </Link>
                       <Link 
                         to="/my-accepted-tasks" 
                         className="flex items-center gap-3 px-6 py-3 text-sm text-gray-700 hover:bg-gradient-to-r hover:from-green-50 hover:to-emerald-50 hover:text-green-600 transition-all duration-200"
                       >
-                        <span className="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center">✅</span>
+                        <span className="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center">
+                          <FaBriefcase className="text-purple-600 text-sm" />
+                        </span>
                         Active Tasks
                       </Link>
                     </div>
@@ -205,7 +211,9 @@ const Navbar = () => {
                         onClick={handleLogout}
                         className="flex items-center gap-3 w-full px-6 py-3 text-sm text-red-600 hover:bg-red-50 transition-all duration-200"
                       >
-                        <span className="w-8 h-8 bg-red-100 rounded-lg flex items-center justify-center">🚪</span>
+                        <span className="w-8 h-8 bg-red-100 rounded-lg flex items-center justify-center">
+                          <FaSignOutAlt className="text-red-600 text-sm" />
+                        </span>
                         Sign Out
                       </button>
                     </div>

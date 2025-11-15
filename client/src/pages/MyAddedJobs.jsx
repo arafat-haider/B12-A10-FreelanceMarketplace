@@ -6,9 +6,12 @@ import { Link } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { FaEdit, FaTrash } from 'react-icons/fa';
 
+import { useState } from 'react';
+
 const MyAddedJobs = () => {
   const { user } = useAuth();
   const queryClient = useQueryClient();
+
 
   // Fetch jobs posted by current user
   const { data: myJobs = [], isLoading } = useQuery({
@@ -23,20 +26,23 @@ const MyAddedJobs = () => {
   // Delete job mutation
   const deleteMutation = useMutation({
     mutationFn: async (jobId) => {
-      await axios.delete(`http://localhost:5000/jobs/${jobId}`);
+      const response = await axios.delete(`http://localhost:5000/jobs/${jobId}?email=${user.email}`);
+      return response.data;
     },
-    onSuccess: () => {
+    onSuccess: (data) => {
       queryClient.invalidateQueries(['myJobs']);
       toast.success('Job deleted successfully!');
     },
-    onError: () => {
-      toast.error('Failed to delete job');
+    onError: (error) => {
+      const errorMessage = error.response?.data?.message || 'Failed to delete job';
+      toast.error(errorMessage);
+      console.error('Delete job error:', error);
     }
   });
 
   // Handle delete job
-  const handleDelete = (jobId) => {
-    if (window.confirm('Are you sure you want to delete this job?')) {
+  const handleDelete = (jobId, jobTitle) => {
+    if (window.confirm(`Are you sure you want to delete "${jobTitle}"? This action cannot be undone.`)) {
       deleteMutation.mutate(jobId);
     }
   };
@@ -44,7 +50,10 @@ const MyAddedJobs = () => {
   if (isLoading) {
     return (
       <div className="flex justify-center items-center min-h-screen">
-        <span className="loading loading-spinner loading-lg text-primary"></span>
+        <div className="flex flex-col items-center gap-4">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#1f4b3f]"></div>
+          <p className="text-gray-600 font-medium">Loading your jobs...</p>
+        </div>
       </div>
     );
   }
@@ -53,7 +62,7 @@ const MyAddedJobs = () => {
     <div className="min-h-screen bg-base-200 py-12 px-4">
       <div className="container mx-auto">
         <h2 className="text-4xl font-bold mb-8">My Added Jobs</h2>
-
+        
         {myJobs.length === 0 ? (
           <div className="text-center py-12">
             <p className="text-xl text-gray-500 mb-4">You haven't posted any jobs yet</p>
@@ -89,7 +98,7 @@ const MyAddedJobs = () => {
                       <span className="badge badge-primary">{job.category}</span>
                     </td>
                     <td>
-                      {new Date(job.postedDate).toLocaleDateString('en-US', {
+                      {new Date(job.createdAt || job.postedDate).toLocaleDateString('en-US', {
                         year: 'numeric',
                         month: 'short',
                         day: 'numeric'
@@ -105,11 +114,12 @@ const MyAddedJobs = () => {
                           Update
                         </Link>
                         <button
-                          onClick={() => handleDelete(job._id)}
+                          onClick={() => handleDelete(job._id, job.title)}
                           className="btn btn-sm btn-error gap-2"
+                          disabled={deleteMutation.isLoading}
                         >
                           <FaTrash />
-                          Delete
+                          {deleteMutation.isLoading ? 'Deleting...' : 'Delete'}
                         </button>
                       </div>
                     </td>

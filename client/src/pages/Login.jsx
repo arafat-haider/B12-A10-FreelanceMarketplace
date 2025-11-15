@@ -4,6 +4,7 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import toast from 'react-hot-toast';
 
+
 const Login = () => {
   const { loginUser, googleLogin } = useAuth();
   const navigate = useNavigate();
@@ -14,6 +15,8 @@ const Login = () => {
     email: '',
     password: ''
   });
+
+
 
   const handleChange = (e) => {
     setFormData({
@@ -86,6 +89,7 @@ const Login = () => {
             </Link>
           </p>
           <form className="mt-8" onSubmit={handleSubmit}>
+            
             <div className="space-y-5">
               <div>
                 <label className="text-base font-medium text-gray-900">

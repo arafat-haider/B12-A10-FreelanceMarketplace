@@ -1,9 +1,32 @@
 import { motion } from 'framer-motion';
-import { FaSearch, FaBriefcase, FaUsers, FaMoneyBillWave, FaPlay, FaCheck, FaArrowRight, FaStar, FaQuoteLeft } from 'react-icons/fa';
+import { FaSearch, FaBriefcase, FaUsers, FaMoneyBillWave, FaPlay, FaCheck, FaArrowRight, FaStar, FaQuoteLeft, FaSun, FaMoon } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
+import { useState, useEffect } from 'react';
+
 
 const Home = () => {
+  const [isDarkMode, setIsDarkMode] = useState(false);
+
+  // Load theme from localStorage
+  useEffect(() => {
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      setIsDarkMode(true);
+      document.documentElement.classList.add('dark');
+    }
+  }, []);
+
+  const toggleTheme = () => {
+    setIsDarkMode(!isDarkMode);
+    if (isDarkMode) {
+      document.documentElement.classList.remove('dark');
+      localStorage.setItem('theme', 'light');
+    } else {
+      document.documentElement.classList.add('dark');
+      localStorage.setItem('theme', 'dark');
+    }
+  };
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -92,9 +115,24 @@ const Home = () => {
   ];
 
   return (
-    <div className="bg-white overflow-hidden">
+    <div className="bg-white dark:bg-gray-900 overflow-hidden transition-colors duration-300">
+      {/* Theme Toggle Button */}
+      <div className="fixed top-4 right-4 z-50">
+        <button
+          onClick={toggleTheme}
+          className="bg-white dark:bg-gray-800 shadow-lg hover:shadow-xl border border-gray-200 dark:border-gray-700 rounded-full p-3 transition-all duration-300 hover:scale-110"
+          aria-label="Toggle theme"
+        >
+          {isDarkMode ? (
+            <FaSun className="w-5 h-5 text-yellow-500" />
+          ) : (
+            <FaMoon className="w-5 h-5 text-gray-600 dark:text-gray-400" />
+          )}
+        </button>
+      </div>
+      
       {/* Hero Section - Enhanced Professional Design */}
-      <section className="relative bg-gradient-to-br from-[#1f4b3f] via-[#2d6b57] to-[#1f4b3f] min-h-[700px] flex items-center overflow-hidden">
+      <section className="relative bg-gradient-to-br from-[#1f4b3f] via-[#2d6b57] to-[#1f4b3f] dark:from-gray-800 dark:via-gray-900 dark:to-black min-h-[700px] flex items-center overflow-hidden transition-colors duration-300">
         {/* Animated Background Elements */}
         <div className="absolute inset-0">
           <div className="absolute top-20 right-10 w-72 h-72 bg-[#5bbb7b] rounded-full opacity-10 blur-3xl animate-pulse"></div>
@@ -502,6 +540,16 @@ const Home = () => {
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
               Explore the newest jobs posted on our platform - updated in real-time from our database
             </p>
+            
+            {latestJobs.length > 0 && (
+              <div className="mt-6 flex justify-center">
+                <div className="bg-blue-50 border border-blue-200 rounded-xl px-4 py-2">
+                  <p className="text-blue-800 text-sm font-medium">
+                    Displaying latest {latestJobs.length} jobs from our database
+                  </p>
+                </div>
+              </div>
+            )}
           </motion.div>
 
           {isLoading ? (
@@ -703,24 +751,45 @@ const Home = () => {
             viewport={{ once: true }}
             className="grid md:grid-cols-2 lg:grid-cols-4 gap-8"
           >
-            <div className="card bg-primary text-white p-8 text-center">
-              <FaBriefcase className="text-5xl mx-auto mb-4" />
-              <h3 className="text-4xl font-bold">500+</h3>
-              <p>Active Jobs</p>
-            </div>
-            <div className="card bg-success text-white p-8 text-center">
-              <FaUsers className="text-5xl mx-auto mb-4" />
-              <h3 className="text-4xl font-bold">1000+</h3>
-              <p>Freelancers</p>
-            </div>
-            <div className="card bg-accent text-white p-8 text-center">
-              <h3 className="text-4xl font-bold mb-2">98%</h3>
-              <p>Success Rate</p>
-            </div>
-            <div className="card bg-secondary text-white p-8 text-center">
-              <h3 className="text-4xl font-bold mb-2">24/7</h3>
-              <p>Support Available</p>
-            </div>
+            <motion.div 
+              variants={itemVariants}
+              className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 text-center border border-white/20 hover:bg-white/20 transition-all duration-300"
+            >
+              <FaBriefcase className="text-5xl mx-auto mb-4 text-[#5bbb7b]" />
+              <h3 className="text-4xl font-bold text-white mb-2">500+</h3>
+              <p className="text-white/80 font-medium">Active Jobs</p>
+            </motion.div>
+            
+            <motion.div 
+              variants={itemVariants}
+              className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 text-center border border-white/20 hover:bg-white/20 transition-all duration-300"
+            >
+              <FaUsers className="text-5xl mx-auto mb-4 text-[#5bbb7b]" />
+              <h3 className="text-4xl font-bold text-white mb-2">1000+</h3>
+              <p className="text-white/80 font-medium">Freelancers</p>
+            </motion.div>
+            
+            <motion.div 
+              variants={itemVariants}
+              className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 text-center border border-white/20 hover:bg-white/20 transition-all duration-300"
+            >
+              <div className="text-5xl mx-auto mb-4 text-[#5bbb7b] flex justify-center">
+                <FaCheck />
+              </div>
+              <h3 className="text-4xl font-bold text-white mb-2">98%</h3>
+              <p className="text-white/80 font-medium">Success Rate</p>
+            </motion.div>
+            
+            <motion.div 
+              variants={itemVariants}
+              className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 text-center border border-white/20 hover:bg-white/20 transition-all duration-300"
+            >
+              <div className="text-5xl mx-auto mb-4 text-[#5bbb7b] flex justify-center items-center">
+                
+              </div>
+              <h3 className="text-4xl font-bold text-white mb-2">24/7</h3>
+              <p className="text-white/80 font-medium">Support Available</p>
+            </motion.div>
           </motion.div>
         </div>
       </section>
