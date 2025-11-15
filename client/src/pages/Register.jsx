@@ -90,22 +90,39 @@ const Register = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#1f4b3f] to-[#2d6b57] flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-      <div className="w-full max-w-md">
+    <div className="min-h-screen bg-gradient-to-br from-[#1f4b3f] via-[#2d6b57] to-[#1f4b3f] flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+      {/* Animated Background Elements */}
+      <div className="absolute inset-0">
+        <div className="absolute top-20 right-10 w-72 h-72 bg-[#5bbb7b] rounded-full opacity-10 blur-3xl animate-pulse"></div>
+        <div className="absolute bottom-20 left-10 w-96 h-96 bg-[#4aa66a] rounded-full opacity-10 blur-3xl animate-pulse delay-1000"></div>
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-white rounded-full opacity-5 blur-2xl"></div>
+      </div>
+
+      <div className="w-full max-w-md relative z-10">
         {/* Card Container */}
-        <div className="bg-white rounded-2xl shadow-2xl p-8">
+        <motion.div 
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="bg-white/95 backdrop-blur-sm rounded-3xl shadow-2xl p-8 border border-white/20"
+        >
           {/* Header */}
-          <div className="text-center mb-8">
-            <div className="mx-auto w-16 h-16 bg-gradient-to-br from-[#5bbb7b] to-[#4aa66a] rounded-full flex items-center justify-center mb-4">
-              <span className="text-white text-2xl font-bold">F</span>
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2, duration: 0.6 }}
+            className="text-center mb-8"
+          >
+            <div className="mx-auto w-20 h-20 bg-gradient-to-br from-[#5bbb7b] to-[#4aa66a] rounded-full flex items-center justify-center mb-6 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105">
+              <FaUser className="text-white text-2xl" />
             </div>
-            <h2 className="text-3xl font-bold text-gray-800">
-              Create Account
+            <h2 className="text-4xl font-bold bg-gradient-to-r from-[#1f4b3f] to-[#2d6b57] bg-clip-text text-transparent mb-2">
+              Join FreelanceHub
             </h2>
-            <p className="text-gray-600 mt-2">
-              Join our freelance community today
+            <p className="text-gray-600 text-lg">
+              Start your freelancing journey today
             </p>
-          </div>
+          </motion.div>
 
           {/* Registration Form */}
           <motion.form 
