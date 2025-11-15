@@ -28,7 +28,7 @@ const Home = () => {
   const { data: latestJobs = [], isLoading } = useQuery({
     queryKey: ['latestJobs'],
     queryFn: async () => {
-      const response = await fetch('http://localhost:5000/jobs?limit=20');
+      const response = await fetch('http://localhost:5000/jobs?limit=6');
       if (!response.ok) {
         throw new Error('Failed to fetch jobs');
       }
@@ -497,10 +497,10 @@ const Home = () => {
               FRESH OPPORTUNITIES
             </span>
             <h2 className="text-4xl md:text-5xl font-bold text-gray-800 mb-6">
-              Latest 20 Job Opportunities
+              Latest Job Opportunities
             </h2>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Explore the newest 20 jobs posted on our platform - updated in real-time from our database
+              Explore the newest jobs posted on our platform - updated in real-time from our database
             </p>
           </motion.div>
 
@@ -526,31 +526,51 @@ const Home = () => {
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true }}
-              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
+              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
             >
-              {latestJobs.slice(0, 20).map((job) => (
+              {latestJobs.map((job) => (
                 <motion.div 
                   key={job._id} 
                   variants={itemVariants}
                   whileHover={{ y: -5, scale: 1.02 }}
                   className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-100 overflow-hidden group"
                 >
-                  <div className="h-48 bg-gradient-to-br from-[#1f4b3f] via-[#2d6b57] to-[#5bbb7b] flex items-center justify-center relative overflow-hidden">
-                    <div className="absolute inset-0 bg-black/10"></div>
-                    <div className="text-white text-center relative z-10">
-                      <div className="text-4xl font-bold mb-2 drop-shadow-lg">
-                        {job.category?.charAt(0)?.toUpperCase() || 'J'}
+                  {/* Cover Image or Category Display */}
+                  <div className="h-48 bg-gradient-to-br from-[#1f4b3f] via-[#2d6b57] to-[#5bbb7b] relative overflow-hidden">
+                    {job.coverImage ? (
+                      <img 
+                        src={job.coverImage} 
+                        alt={job.title}
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                        onError={(e) => {
+                          e.target.src = 'https://via.placeholder.com/400x200/1f4b3f/white?text=Job+Image';
+                        }}
+                      />
+                    ) : (
+                      <div className="h-full flex items-center justify-center text-white">
+                        <div className="text-center">
+                          <div className="text-4xl mb-2">
+                            {job.category === 'Web Development' && '💻'}
+                            {job.category === 'Digital Marketing' && '📈'}
+                            {job.category === 'Graphics Designing' && '🎨'}
+                            {!['Web Development', 'Digital Marketing', 'Graphics Designing'].includes(job.category) && '💼'}
+                          </div>
+                          <div className="text-sm font-semibold">{job.category}</div>
+                        </div>
                       </div>
-                      <div className="text-sm opacity-90 font-medium">
-                        {job.category || 'General'}
-                      </div>
-                    </div>
+                    )}
+                    <div className="absolute inset-0 bg-black/20"></div>
                     <div className="absolute top-4 right-4">
                       {new Date(job.createdAt) > new Date(Date.now() - 7*24*60*60*1000) && (
                         <span className="bg-[#5bbb7b] text-white px-2 py-1 rounded-full text-xs font-semibold">
                           NEW
                         </span>
                       )}
+                    </div>
+                    <div className="absolute bottom-4 left-4">
+                      <span className="bg-white/90 backdrop-blur-sm text-[#1f4b3f] px-3 py-1 rounded-full text-sm font-semibold">
+                        {job.category}
+                      </span>
                     </div>
                   </div>
                   
@@ -559,32 +579,26 @@ const Home = () => {
                       {job.title}
                     </h3>
                     <p className="text-gray-600 mb-4 line-clamp-3 text-sm leading-relaxed">
-                      {job.description}
+                      {job.summary}
                     </p>
                     
                     <div className="space-y-3 mb-6">
-                      <div className="flex items-center justify-between">
-                        <span className="text-sm font-medium text-gray-500">Budget:</span>
-                        <span className="text-lg font-bold text-[#5bbb7b]">
-                          ${job.min_price} - ${job.max_price}
-                        </span>
-                      </div>
                       <div className="flex items-center justify-between text-sm">
-                        <span className="text-gray-500">Deadline:</span>
+                        <span className="text-gray-500">Posted by:</span>
                         <span className="font-medium text-gray-700">
-                          {new Date(job.deadline).toLocaleDateString()}
+                          {job.postedBy}
                         </span>
                       </div>
                       <div className="flex items-center justify-between text-sm">
-                        <span className="text-gray-500">Category:</span>
-                        <span className="bg-gray-100 text-gray-700 px-2 py-1 rounded-full text-xs font-medium">
-                          {job.category}
+                        <span className="text-gray-500">Date:</span>
+                        <span className="font-medium text-gray-700">
+                          {new Date(job.createdAt).toLocaleDateString()}
                         </span>
                       </div>
                     </div>
                     
                     <Link 
-                      to={`/job/${job._id}`}
+                      to={`/job-details/${job._id}`}
                       className="w-full bg-[#1f4b3f] hover:bg-[#2d6b57] text-white py-3 px-4 rounded-xl font-semibold text-center block transition-all duration-300 transform hover:scale-105"
                     >
                       View Details
