@@ -1,49 +1,16 @@
-// Home page with banner, latest jobs, and additional sections
-import { useQuery } from '@tanstack/react-query';
-import axios from 'axios';
-import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { 
-  FaBriefcase, 
-  FaUsers, 
-  FaCheck, 
-  FaArrowRight, 
-  FaCode, 
-  FaBullhorn, 
-  FaPaintBrush, 
-  FaPenFancy,
-  FaStar,
-  FaPlay,
-  FaShieldAlt,
-  FaClock,
-  FaMoneyBillWave,
-  FaGlobe
-} from 'react-icons/fa';
+import { FaSearch, FaBriefcase, FaUsers, FaMoneyBillWave, FaPlay, FaCheck, FaArrowRight, FaStar, FaQuoteLeft } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
 
 const Home = () => {
-  // Fetch latest 6 jobs from the database
-  const { data: latestJobs = [], isLoading } = useQuery({
-    queryKey: ['latestJobs'],
-    queryFn: async () => {
-      try {
-        const response = await axios.get('http://localhost:5000/jobs/latest');
-        return response.data;
-      } catch (error) {
-        console.error('Error fetching jobs:', error);
-        return [];
-      }
-    },
-    retry: false,
-    refetchOnWindowFocus: false
-  });
-
-  // Animation variants for framer motion
+  // Animation variants
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.1
+        staggerChildren: 0.3
       }
     }
   };
@@ -52,48 +19,65 @@ const Home = () => {
     hidden: { y: 20, opacity: 0 },
     visible: {
       y: 0,
-      opacity: 1
+      opacity: 1,
+      transition: {
+        duration: 0.6
+      }
     }
   };
 
+  // Fetch latest jobs
+  const { data: latestJobs = [], isLoading } = useQuery({
+    queryKey: ['latestJobs'],
+    queryFn: async () => {
+      const response = await fetch('http://localhost:5000/jobs?limit=6');
+      if (!response.ok) {
+        throw new Error('Failed to fetch jobs');
+      }
+      return response.json();
+    }
+  });
+
+  // Services data
   const services = [
     {
-      icon: FaCode,
-      title: "Web Development",
-      description: "Custom websites and web applications",
-      jobs: "1,200+ jobs available",
-      color: "from-blue-500 to-cyan-500"
+      icon: FaBriefcase,
+      title: "Programming & Tech",
+      description: "Web development, mobile apps, and software solutions",
+      jobs: "2,847 jobs",
+      color: "from-blue-500 to-blue-600"
     },
     {
-      icon: FaPaintBrush,
-      title: "Graphic Design",
-      description: "Logos, branding, and visual design",
-      jobs: "800+ jobs available",
-      color: "from-purple-500 to-pink-500"
+      icon: FaUsers,
+      title: "Design & Creative",
+      description: "Logo design, UI/UX, graphics, and branding services",
+      jobs: "1,923 jobs",
+      color: "from-purple-500 to-purple-600"
     },
     {
-      icon: FaPenFancy,
-      title: "Content Writing",
-      description: "Articles, blogs, and copywriting",
-      jobs: "600+ jobs available",
-      color: "from-green-500 to-emerald-500"
-    },
-    {
-      icon: FaBullhorn,
+      icon: FaSearch,
       title: "Digital Marketing",
-      description: "SEO, social media, and advertising",
-      jobs: "450+ jobs available",
-      color: "from-orange-500 to-red-500"
+      description: "SEO, social media, content marketing strategies",
+      jobs: "1,456 jobs",
+      color: "from-green-500 to-green-600"
+    },
+    {
+      icon: FaMoneyBillWave,
+      title: "Writing & Translation",
+      description: "Content writing, copywriting, translation services",
+      jobs: "987 jobs",
+      color: "from-orange-500 to-orange-600"
     }
   ];
 
+  // Testimonials data
   const testimonials = [
     {
       name: "Sarah Johnson",
-      role: "Startup Founder",
-      image: "https://i.ibb.co/q5X9X9g/person1.jpg",
+      role: "CEO, TechStart Inc.",
+      image: "https://i.ibb.co/YcTdFqR/person1.jpg",
       rating: 5,
-      comment: "FreelanceHub connected me with amazing developers who brought my vision to life. Highly recommended!"
+      comment: "This platform helped me find the perfect developer for my startup. Amazing quality and communication!"
     },
     {
       name: "Michael Chen",
@@ -148,36 +132,35 @@ const Home = () => {
               <p className="text-xl md:text-2xl mb-8 text-white/90 leading-relaxed max-w-xl">
                 Work with talented people at the most affordable price to get the most out of your time and cost
               </p>
-              
+
               {/* Enhanced Search Bar */}
-              <motion.div 
+              <motion.div
                 initial={{ y: 30, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: 0.4, duration: 0.6 }}
-                className="bg-white rounded-2xl p-2 shadow-2xl max-w-2xl mb-8 border border-gray-100"
+                className="bg-white/10 backdrop-blur-sm rounded-2xl p-2 flex flex-col sm:flex-row gap-2 mb-8 border border-white/20"
               >
-                <div className="flex flex-col md:flex-row gap-2">
-                  <div className="flex-1">
-                    <input
-                      type="text"
-                      placeholder="What service are you looking for?"
-                      className="w-full px-6 py-4 bg-transparent text-gray-700 focus:outline-none text-lg placeholder-gray-500"
-                    />
-                  </div>
-                  <div className="md:border-l border-gray-200 md:pl-4">
-                    <select className="w-full md:w-auto px-4 py-4 bg-transparent text-gray-700 focus:outline-none text-lg">
-                      <option value="">All Categories</option>
-                      <option value="web-dev">Web Development</option>
-                      <option value="mobile-dev">Mobile Development</option>
-                      <option value="design">Design & Creative</option>
-                      <option value="writing">Writing & Content</option>
-                      <option value="marketing">Digital Marketing</option>
-                    </select>
-                  </div>
-                  <button className="bg-gradient-to-r from-[#5bbb7b] to-[#4aa66a] hover:from-[#4aa66a] hover:to-[#3d9558] text-white px-8 py-4 rounded-xl font-semibold text-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105">
-                    Search Now
-                  </button>
+                <div className="flex items-center flex-1 bg-white/5 rounded-xl px-4 py-3">
+                  <FaSearch className="text-white/60 mr-3" />
+                  <input 
+                    type="text" 
+                    placeholder="Search for any service..."
+                    className="bg-transparent text-white placeholder-white/60 flex-1 outline-none text-lg"
+                  />
                 </div>
+                <div className="flex items-center bg-white/5 rounded-xl px-4 py-3 min-w-[200px]">
+                  <select className="bg-transparent text-white flex-1 outline-none cursor-pointer">
+                    <option value="">Select Category</option>
+                    <option value="web-dev">Web Development</option>
+                    <option value="mobile-dev">Mobile Development</option>
+                    <option value="design">Design & Creative</option>
+                    <option value="writing">Writing & Content</option>
+                    <option value="marketing">Digital Marketing</option>
+                  </select>
+                </div>
+                <button className="bg-gradient-to-r from-[#5bbb7b] to-[#4aa66a] hover:from-[#4aa66a] hover:to-[#3d9558] text-white px-8 py-4 rounded-xl font-semibold text-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105">
+                  Search Now
+                </button>
               </motion.div>
 
               {/* CTA Buttons */}
@@ -200,83 +183,86 @@ const Home = () => {
                 </button>
               </motion.div>
 
-              {/* Stats */}
+              {/* Statistics */}
               <motion.div
-                initial={{ y: 30, opacity: 0 }}
+                initial={{ y: 20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
-                transition={{ delay: 0.8, duration: 0.6 }}
+                transition={{ delay: 0.8, duration: 0.8 }}
                 className="grid grid-cols-2 md:grid-cols-4 gap-6"
               >
                 <div className="text-center">
-                  <div className="text-3xl md:text-4xl font-bold text-white">2.5M+</div>
-                  <div className="text-white/70 text-sm mt-1">Total Freelancers</div>
+                  <div className="text-3xl font-bold text-white">960M</div>
+                  <div className="text-white/70 text-sm mt-1">Total Freelancer</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-3xl md:text-4xl font-bold text-white">1.8M+</div>
-                  <div className="text-white/70 text-sm mt-1">Positive Reviews</div>
+                  <div className="text-3xl font-bold text-white">850M</div>
+                  <div className="text-white/70 text-sm mt-1">Positive Review</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-3xl md:text-4xl font-bold text-white">500K+</div>
-                  <div className="text-white/70 text-sm mt-1">Orders Completed</div>
+                  <div className="text-3xl font-bold text-white">98M</div>
+                  <div className="text-white/70 text-sm mt-1">Order received</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-3xl md:text-4xl font-bold text-white">99%</div>
-                  <div className="text-white/70 text-sm mt-1">Satisfaction Rate</div>
+                  <div className="text-3xl font-bold text-white">250M</div>
+                  <div className="text-white/70 text-sm mt-1">Projects Completed</div>
                 </div>
               </motion.div>
             </motion.div>
 
-            {/* Right Content - Enhanced Feature Cards */}
+            {/* Right Content - Feature Cards */}
             <motion.div
               initial={{ x: 50, opacity: 0 }}
               animate={{ x: 0, opacity: 1 }}
               transition={{ delay: 0.4, duration: 0.8 }}
               className="hidden lg:block relative"
             >
-              <div className="grid grid-cols-2 gap-6">
-                {/* Enhanced Feature Cards */}
+              <div className="grid grid-cols-2 gap-4">
+                {/* Card 1 */}
                 <motion.div 
-                  whileHover={{ y: -10, scale: 1.02 }}
-                  className="bg-white/10 backdrop-blur-sm rounded-3xl p-6 border border-white/20 shadow-2xl"
+                  whileHover={{ y: -10 }}
+                  className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20"
                 >
-                  <div className="w-14 h-14 bg-gradient-to-r from-[#5bbb7b] to-[#4aa66a] rounded-2xl flex items-center justify-center mb-4 shadow-lg">
-                    <FaShieldAlt className="text-white text-xl" />
+                  <div className="w-12 h-12 bg-[#5bbb7b] rounded-full flex items-center justify-center mb-4">
+                    <FaCheck className="text-white text-xl" />
                   </div>
-                  <h3 className="text-white font-bold text-lg mb-2">Secure Payments</h3>
-                  <p className="text-white/70 text-sm leading-relaxed">100% secure payment system with buyer protection</p>
+                  <h3 className="text-white font-semibold mb-2">Proof of quality</h3>
+                  <p className="text-white/70 text-sm">Check any project's work samples</p>
                 </motion.div>
 
+                {/* Card 2 */}
                 <motion.div 
-                  whileHover={{ y: -10, scale: 1.02 }}
-                  className="bg-white/10 backdrop-blur-sm rounded-3xl p-6 border border-white/20 shadow-2xl mt-8"
+                  whileHover={{ y: -10 }}
+                  className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20 mt-8"
                 >
-                  <div className="w-14 h-14 bg-gradient-to-r from-blue-500 to-purple-500 rounded-2xl flex items-center justify-center mb-4 shadow-lg">
+                  <div className="w-12 h-12 bg-[#5bbb7b] rounded-full flex items-center justify-center mb-4">
                     <FaUsers className="text-white text-xl" />
                   </div>
-                  <h3 className="text-white font-bold text-lg mb-2">Expert Freelancers</h3>
-                  <p className="text-white/70 text-sm leading-relaxed">Vetted professionals with proven track records</p>
+                  <h3 className="text-white font-semibold mb-2">58M+ Professionals</h3>
+                  <p className="text-white/70 text-sm">Expert freelancers ready</p>
                 </motion.div>
 
+                {/* Card 3 */}
                 <motion.div 
-                  whileHover={{ y: -10, scale: 1.02 }}
-                  className="bg-white/10 backdrop-blur-sm rounded-3xl p-6 border border-white/20 shadow-2xl"
+                  whileHover={{ y: -10 }}
+                  className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20"
                 >
-                  <div className="w-14 h-14 bg-gradient-to-r from-orange-500 to-red-500 rounded-2xl flex items-center justify-center mb-4 shadow-lg">
-                    <FaClock className="text-white text-xl" />
+                  <div className="w-12 h-12 bg-[#5bbb7b] rounded-full flex items-center justify-center mb-4">
+                    <FaBriefcase className="text-white text-xl" />
                   </div>
-                  <h3 className="text-white font-bold text-lg mb-2">Fast Delivery</h3>
-                  <p className="text-white/70 text-sm leading-relaxed">Quick turnaround times for urgent projects</p>
+                  <h3 className="text-white font-semibold mb-2">Safe and secure</h3>
+                  <p className="text-white/70 text-sm">Protected payments</p>
                 </motion.div>
 
+                {/* Card 4 */}
                 <motion.div 
-                  whileHover={{ y: -10, scale: 1.02 }}
-                  className="bg-white/10 backdrop-blur-sm rounded-3xl p-6 border border-white/20 shadow-2xl mt-8"
+                  whileHover={{ y: -10 }}
+                  className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20 mt-8"
                 >
-                  <div className="w-14 h-14 bg-gradient-to-r from-emerald-500 to-teal-500 rounded-2xl flex items-center justify-center mb-4 shadow-lg">
-                    <FaMoneyBillWave className="text-white text-xl" />
+                  <div className="w-12 h-12 bg-[#5bbb7b] rounded-full flex items-center justify-center mb-4">
+                    <FaArrowRight className="text-white text-xl" />
                   </div>
-                  <h3 className="text-white font-bold text-lg mb-2">Best Prices</h3>
-                  <p className="text-white/70 text-sm leading-relaxed">Competitive rates for quality services</p>
+                  <h3 className="text-white font-semibold mb-2">24/7 support</h3>
+                  <p className="text-white/70 text-sm">We're here to help</p>
                 </motion.div>
               </div>
             </motion.div>
@@ -333,163 +319,9 @@ const Home = () => {
           </motion.div>
         </div>
       </section>
-                transition={{ delay: 0.6, duration: 0.8 }}
-                className="grid grid-cols-4 gap-6 mt-12"
-              >
-                <div className="text-center">
-                  <div className="text-3xl font-bold text-white">960M</div>
-                  <div className="text-white/70 text-sm mt-1">Total Freelancer</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-3xl font-bold text-white">850M</div>
-                  <div className="text-white/70 text-sm mt-1">Positive Review</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-3xl font-bold text-white">98M</div>
-                  <div className="text-white/70 text-sm mt-1">Order recieved</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-3xl font-bold text-white">250M</div>
-                  <div className="text-white/70 text-sm mt-1">Projects Completed</div>
-                </div>
-              </motion.div>
-            </motion.div>
-
-            {/* Right Content - Image Cards */}
-            <motion.div
-              initial={{ x: 50, opacity: 0 }}
-              animate={{ x: 0, opacity: 1 }}
-              transition={{ delay: 0.4, duration: 0.8 }}
-              className="hidden lg:block relative"
-            >
-              <div className="grid grid-cols-2 gap-4">
-                {/* Card 1 */}
-                <motion.div 
-                  whileHover={{ y: -10 }}
-                  className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20"
-                >
-                  <div className="w-12 h-12 bg-[#5bbb7b] rounded-full flex items-center justify-center mb-4">
-                    <FaCheck className="text-white text-xl" />
-                  </div>
-                  <h3 className="text-white font-semibold mb-2">Proof of quality</h3>
-                  <p className="text-white/70 text-sm">Lorem Ipsum Dolor Amet</p>
-                </motion.div>
-
-                {/* Card 2 */}
-                <motion.div 
-                  whileHover={{ y: -10 }}
-                  className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20 mt-8"
-                >
-                  <div className="w-12 h-12 bg-[#5bbb7b] rounded-full flex items-center justify-center mb-4">
-                    <FaUsers className="text-white text-xl" />
-                  </div>
-                  <h3 className="text-white font-semibold mb-2">58M+ Professionals</h3>
-                  <p className="text-white/70 text-sm">Expert freelancers ready</p>
-                </motion.div>
-
-                {/* Card 3 */}
-                <motion.div 
-                  whileHover={{ y: -10 }}
-                  className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20"
-                >
-                  <div className="w-12 h-12 bg-[#5bbb7b] rounded-full flex items-center justify-center mb-4">
-                    <FaBriefcase className="text-white text-xl" />
-                  </div>
-                  <h3 className="text-white font-semibold mb-2">Safe and secure</h3>
-                  <p className="text-white/70 text-sm">Protected payments</p>
-                </motion.div>
-
-                {/* Card 4 */}
-                <motion.div 
-                  whileHover={{ y: -10 }}
-                  className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20 mt-8"
-                >
-                  <div className="w-12 h-12 bg-[#5bbb7b] rounded-full flex items-center justify-center mb-4">
-                    <FaArrowRight className="text-white text-xl" />
-                  </div>
-                  <h3 className="text-white font-semibold mb-2">24/7 support</h3>
-                  <p className="text-white/70 text-sm">We're here to help</p>
-                </motion.div>
-              </div>
-            </motion.div>
-          </div>
-        </div>
-      </motion.div>
 
       {/* Latest Jobs Section */}
-      <div className="container mx-auto px-4 py-16">
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          className="text-center mb-12"
-        >
-          <h2 className="text-4xl font-bold mb-4">Latest Job Opportunities</h2>
-          <p className="text-lg text-gray-600">Explore the newest jobs posted on our platform</p>
-        </motion.div>
-
-        {isLoading ? (
-          <div className="flex justify-center">
-            <span className="loading loading-spinner loading-lg text-primary"></span>
-          </div>
-        ) : (
-          <motion.div 
-            variants={containerVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-          >
-            {latestJobs.slice(0, 6).map((job) => (
-              <motion.div 
-                key={job._id} 
-                variants={itemVariants}
-                whileHover={{ scale: 1.03 }}
-                className="card bg-base-100 shadow-xl h-full"
-              >
-                <figure className="h-48">
-                  <img 
-                    src={job.coverImage || 'https://i.ibb.co/f4kTLT7/job-placeholder.jpg'} 
-                    alt={job.title}
-                    className="w-full h-full object-cover"
-                  />
-                </figure>
-                <div className="card-body">
-                  <h3 className="card-title text-lg">{job.title}</h3>
-                  <p className="text-sm text-gray-600 line-clamp-2">{job.summary}</p>
-                  <div className="flex items-center gap-2 mt-2">
-                    <div className="badge bg-green-500 text-white border-0">{job.category}</div>
-                  </div>
-                  <p className="text-sm text-gray-500 mt-2">Posted by: {job.postedBy}</p>
-                  <div className="card-actions justify-end mt-4">
-                    <Link to={`/job/${job._id}`} className="btn bg-green-600 hover:bg-green-700 text-white btn-sm border-0">
-                      View Details <FaArrowRight />
-                    </Link>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </motion.div>
-        )}
-
-        {!isLoading && latestJobs.length === 0 && (
-          <div className="text-center py-12">
-            <p className="text-xl text-gray-500 mb-4">No jobs available at the moment. Be the first to post!</p>
-            <Link to="/add-job" className="btn bg-green-600 hover:bg-green-700 text-white border-0">Post a Job</Link>
-          </div>
-        )}
-
-        {latestJobs.length > 0 && (
-          <div className="text-center mt-8">
-            <Link to="/all-jobs" className="btn btn-outline border-green-600 text-green-600 hover:bg-green-600 hover:text-white">
-              View All Jobs
-            </Link>
-          </div>
-        )}
-      </div>
-
-      {/* Top Categories Section */}
-      <div className="bg-base-200 py-16">
+      <section className="py-20 bg-white">
         <div className="container mx-auto px-4">
           <motion.div
             initial={{ opacity: 0 }}
@@ -497,85 +329,157 @@ const Home = () => {
             viewport={{ once: true }}
             className="text-center mb-12"
           >
-            <h2 className="text-4xl font-bold mb-4">Top Categories</h2>
-            <p className="text-lg text-gray-600">Explore jobs by popular categories</p>
+            <h2 className="text-4xl font-bold mb-4">Latest Job Opportunities</h2>
+            <p className="text-lg text-gray-600">Explore the newest jobs posted on our platform</p>
           </motion.div>
 
-          <motion.div 
+          {isLoading ? (
+            <div className="flex justify-center">
+              <span className="loading loading-spinner loading-lg text-primary"></span>
+            </div>
+          ) : (
+            <motion.div 
+              variants={containerVariants}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+            >
+              {latestJobs.slice(0, 6).map((job) => (
+                <motion.div 
+                  key={job._id} 
+                  variants={itemVariants}
+                  whileHover={{ scale: 1.03 }}
+                  className="card bg-base-100 shadow-xl h-full"
+                >
+                  <figure className="h-48">
+                    <img 
+                      src={job.image || "https://via.placeholder.com/300x200"} 
+                      alt={job.title}
+                      className="w-full h-full object-cover"
+                    />
+                  </figure>
+                  <div className="card-body">
+                    <h2 className="card-title text-lg">
+                      {job.title}
+                      {new Date(job.createdAt) > new Date(Date.now() - 7*24*60*60*1000) && (
+                        <div className="badge badge-secondary">NEW</div>
+                      )}
+                    </h2>
+                    <p className="text-sm text-gray-600 mb-2">{job.description}</p>
+                    <div className="flex items-center justify-between text-sm">
+                      <div className="flex items-center gap-1">
+                        <span className="font-semibold">Budget:</span>
+                        <span className="text-primary">${job.min_price} - ${job.max_price}</span>
+                      </div>
+                    </div>
+                    <div className="flex items-center justify-between text-xs text-gray-500 mt-2">
+                      <span>Deadline: {new Date(job.deadline).toLocaleDateString()}</span>
+                      <span>{job.category}</span>
+                    </div>
+                    <div className="card-actions justify-end mt-4">
+                      <Link 
+                        to={`/job/${job._id}`}
+                        className="btn btn-primary btn-sm"
+                      >
+                        View Details
+                      </Link>
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+            </motion.div>
+          )}
+
+          <div className="text-center mt-12">
+            <Link 
+              to="/all-jobs"
+              className="btn btn-outline btn-primary btn-lg"
+            >
+              View All Jobs
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Testimonials Section */}
+      <section className="py-20 bg-base-200">
+        <div className="container mx-auto px-4">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="text-center mb-16"
+          >
+            <span className="inline-block bg-[#5bbb7b] text-white px-4 py-2 rounded-full text-sm font-semibold mb-4">
+              TESTIMONIALS
+            </span>
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-800 mb-6">
+              What Our Clients Say
+            </h2>
+            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+              Hear from satisfied clients who found success on our platform
+            </p>
+          </motion.div>
+
+          <motion.div
             variants={containerVariants}
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
+            className="grid md:grid-cols-2 lg:grid-cols-3 gap-8"
           >
-            {[
-              { name: 'Web Development', icon: FaCode, count: '150+', color: 'text-blue-500' },
-              { name: 'Digital Marketing', icon: FaBullhorn, count: '120+', color: 'text-green-500' },
-              { name: 'Graphics Design', icon: FaPaintBrush, count: '100+', color: 'text-purple-500' },
-              { name: 'Content Writing', icon: FaPenFancy, count: '80+', color: 'text-orange-500' }
-            ].map((category, index) => (
-              <motion.div 
+            {testimonials.map((testimonial, index) => (
+              <motion.div
                 key={index}
                 variants={itemVariants}
-                whileHover={{ scale: 1.05 }}
-                className="card bg-base-100 shadow-lg p-6 text-center cursor-pointer"
+                className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow duration-300"
               >
-                <div className={`text-5xl mb-4 ${category.color} flex justify-center`}>
-                  <category.icon />
+                <div className="flex items-center mb-4">
+                  {[...Array(testimonial.rating)].map((_, i) => (
+                    <FaStar key={i} className="text-yellow-400" />
+                  ))}
                 </div>
-                <h3 className="text-xl font-bold mb-2">{category.name}</h3>
-                <p className="text-gray-600">{category.count} Jobs Available</p>
+                <FaQuoteLeft className="text-[#5bbb7b] text-2xl mb-4" />
+                <p className="text-gray-700 mb-6 leading-relaxed">{testimonial.comment}</p>
+                <div className="flex items-center">
+                  <img 
+                    src={testimonial.image} 
+                    alt={testimonial.name}
+                    className="w-12 h-12 rounded-full mr-4 object-cover"
+                  />
+                  <div>
+                    <h4 className="font-semibold text-gray-800">{testimonial.name}</h4>
+                    <p className="text-sm text-gray-600">{testimonial.role}</p>
+                  </div>
+                </div>
               </motion.div>
             ))}
           </motion.div>
         </div>
-      </div>
+      </section>
 
-      {/* About Platform Section */}
-      <div className="container mx-auto px-4 py-16">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+      {/* Statistics Section */}
+      <section className="py-20 bg-[#1f4b3f]">
+        <div className="container mx-auto px-4">
           <motion.div
-            initial={{ x: -50, opacity: 0 }}
-            whileInView={{ x: 0, opacity: 1 }}
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
+            className="text-center mb-12"
           >
-            <h2 className="text-4xl font-bold mb-6">About FreelanceHub</h2>
-            <p className="text-lg text-gray-600 mb-4">
-              FreelanceHub is your trusted platform for connecting talented freelancers with amazing job opportunities. 
-              We provide a secure and reliable marketplace where professionals can showcase their skills and clients can find the perfect match for their projects.
-            </p>
-            <div className="space-y-4 mt-6">
-              <div className="flex items-start gap-3">
-                <FaCheck className="text-success text-xl mt-1" />
-                <div>
-                  <h4 className="font-bold">Verified Projects</h4>
-                  <p className="text-gray-600">All jobs are verified for authenticity and quality</p>
-                </div>
-              </div>
-              <div className="flex items-start gap-3">
-                <FaCheck className="text-success text-xl mt-1" />
-                <div>
-                  <h4 className="font-bold">Secure Payments</h4>
-                  <p className="text-gray-600">Safe and secure transaction handling</p>
-                </div>
-              </div>
-              <div className="flex items-start gap-3">
-                <FaCheck className="text-success text-xl mt-1" />
-                <div>
-                  <h4 className="font-bold">24/7 Support</h4>
-                  <p className="text-gray-600">Round-the-clock customer support</p>
-                </div>
-              </div>
-            </div>
+            <h2 className="text-4xl font-bold text-white mb-4">Our Platform Statistics</h2>
+            <p className="text-xl text-white/80">Trusted by millions worldwide</p>
           </motion.div>
 
           <motion.div
-            initial={{ x: 50, opacity: 0 }}
-            whileInView={{ x: 0, opacity: 1 }}
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
             viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="grid grid-cols-2 gap-6"
+            className="grid md:grid-cols-2 lg:grid-cols-4 gap-8"
           >
             <div className="card bg-primary text-white p-8 text-center">
               <FaBriefcase className="text-5xl mx-auto mb-4" />
@@ -587,13 +491,17 @@ const Home = () => {
               <h3 className="text-4xl font-bold">1000+</h3>
               <p>Freelancers</p>
             </div>
-            <div className="card bg-accent text-white p-8 text-center col-span-2">
-              <h3 className="text-4xl font-bold mb-2">98% Success Rate</h3>
-              <p>Client Satisfaction</p>
+            <div className="card bg-accent text-white p-8 text-center">
+              <h3 className="text-4xl font-bold mb-2">98%</h3>
+              <p>Success Rate</p>
+            </div>
+            <div className="card bg-secondary text-white p-8 text-center">
+              <h3 className="text-4xl font-bold mb-2">24/7</h3>
+              <p>Support Available</p>
             </div>
           </motion.div>
         </div>
-      </div>
+      </section>
     </div>
   );
 };
