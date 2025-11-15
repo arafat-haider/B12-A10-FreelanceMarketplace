@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 
 const Home = () => {
-  // Animation variants
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -26,7 +25,6 @@ const Home = () => {
     }
   };
 
-  // Fetch latest jobs
   const { data: latestJobs = [], isLoading } = useQuery({
     queryKey: ['latestJobs'],
     queryFn: async () => {
@@ -38,7 +36,6 @@ const Home = () => {
     }
   });
 
-  // Services data
   const services = [
     {
       icon: FaBriefcase,
@@ -70,7 +67,6 @@ const Home = () => {
     }
   ];
 
-  // Testimonials data
   const testimonials = [
     {
       name: "Sarah Johnson",
@@ -108,7 +104,6 @@ const Home = () => {
 
         <div className="container mx-auto px-4 py-20 relative z-10">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
-            {/* Left Content */}
             <motion.div
               initial={{ x: -50, opacity: 0 }}
               animate={{ x: 0, opacity: 1 }}
@@ -133,7 +128,6 @@ const Home = () => {
                 Work with talented people at the most affordable price to get the most out of your time and cost
               </p>
 
-              {/* Enhanced Search Bar */}
               <motion.div
                 initial={{ y: 30, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
@@ -163,7 +157,6 @@ const Home = () => {
                 </button>
               </motion.div>
 
-              {/* CTA Buttons */}
               <motion.div
                 initial={{ y: 30, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
@@ -183,7 +176,6 @@ const Home = () => {
                 </button>
               </motion.div>
 
-              {/* Statistics */}
               <motion.div
                 initial={{ y: 20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
@@ -209,7 +201,6 @@ const Home = () => {
               </motion.div>
             </motion.div>
 
-            {/* Right Content - Feature Cards */}
             <motion.div
               initial={{ x: 50, opacity: 0 }}
               animate={{ x: 0, opacity: 1 }}
@@ -217,7 +208,6 @@ const Home = () => {
               className="hidden lg:block relative"
             >
               <div className="grid grid-cols-2 gap-4">
-                {/* Card 1 */}
                 <motion.div 
                   whileHover={{ y: -10 }}
                   className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20"
@@ -229,7 +219,6 @@ const Home = () => {
                   <p className="text-white/70 text-sm">Check any project's work samples</p>
                 </motion.div>
 
-                {/* Card 2 */}
                 <motion.div 
                   whileHover={{ y: -10 }}
                   className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20 mt-8"
@@ -241,7 +230,6 @@ const Home = () => {
                   <p className="text-white/70 text-sm">Expert freelancers ready</p>
                 </motion.div>
 
-                {/* Card 3 */}
                 <motion.div 
                   whileHover={{ y: -10 }}
                   className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20"
@@ -253,7 +241,6 @@ const Home = () => {
                   <p className="text-white/70 text-sm">Protected payments</p>
                 </motion.div>
 
-                {/* Card 4 */}
                 <motion.div 
                   whileHover={{ y: -10 }}
                   className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20 mt-8"
@@ -320,7 +307,6 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Latest Jobs Section */}
       <section className="py-20 bg-white">
         <div className="container mx-auto px-4">
           <motion.div
@@ -402,7 +388,6 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Testimonials Section */}
       <section className="py-20 bg-base-200">
         <div className="container mx-auto px-4">
           <motion.div
@@ -460,7 +445,6 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Statistics Section */}
       <section className="py-20 bg-[#1f4b3f]">
         <div className="container mx-auto px-4">
           <motion.div

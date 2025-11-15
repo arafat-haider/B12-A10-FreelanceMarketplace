@@ -1,10 +1,7 @@
-// Register page with email/password and Google sign-in
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import toast from 'react-hot-toast';
-import { FaGoogle, FaUser, FaEnvelope, FaLock, FaImage, FaEye, FaEyeSlash } from 'react-icons/fa';
-import { motion } from 'framer-motion';
 
 const Register = () => {
   const { registerUser, updateUserProfile, googleLogin } = useAuth();
@@ -17,9 +14,6 @@ const Register = () => {
     password: ''
   });
 
-  const [showPassword, setShowPassword] = useState(false);
-
-  // Handle input change
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -27,7 +21,6 @@ const Register = () => {
     });
   };
 
-  // Password validation
   const validatePassword = (password) => {
     const hasUpperCase = /[A-Z]/.test(password);
     const hasLowerCase = /[a-z]/.test(password);
@@ -45,21 +38,17 @@ const Register = () => {
     return null;
   };
 
-  // Handle form submit
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Validate password
     const passwordError = validatePassword(formData.password);
     if (passwordError) {
       toast.error(passwordError);
       return;
     }
 
-    // Register user
     registerUser(formData.email, formData.password)
       .then(() => {
-        // Update profile with name and photo
         return updateUserProfile(formData.name, formData.photoURL);
       })
       .then(() => {
@@ -76,7 +65,6 @@ const Register = () => {
       });
   };
 
-  // Handle Google login
   const handleGoogleLogin = () => {
     googleLogin()
       .then(() => {
@@ -90,201 +78,122 @@ const Register = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#1f4b3f] via-[#2d6b57] to-[#1f4b3f] flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
-      {/* Animated Background Elements */}
-      <div className="absolute inset-0">
-        <div className="absolute top-20 right-10 w-72 h-72 bg-[#5bbb7b] rounded-full opacity-10 blur-3xl animate-pulse"></div>
-        <div className="absolute bottom-20 left-10 w-96 h-96 bg-[#4aa66a] rounded-full opacity-10 blur-3xl animate-pulse delay-1000"></div>
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-white rounded-full opacity-5 blur-2xl"></div>
-      </div>
-
-      <div className="w-full max-w-md relative z-10">
-        {/* Card Container */}
-        <motion.div 
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="bg-white/95 backdrop-blur-sm rounded-3xl shadow-2xl p-8 border border-white/20"
-        >
-          {/* Header */}
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2, duration: 0.6 }}
-            className="text-center mb-8"
-          >
-            <div className="mx-auto w-20 h-20 bg-gradient-to-br from-[#5bbb7b] to-[#4aa66a] rounded-full flex items-center justify-center mb-6 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105">
-              <FaUser className="text-white text-2xl" />
-            </div>
-            <h2 className="text-4xl font-bold bg-gradient-to-r from-[#1f4b3f] to-[#2d6b57] bg-clip-text text-transparent mb-2">
-              Join FreelanceHub
-            </h2>
-            <p className="text-gray-600 text-lg">
-              Start your freelancing journey today
-            </p>
-          </motion.div>
-
-          {/* Registration Form */}
-          <motion.form 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4, duration: 0.6 }}
-            onSubmit={handleSubmit} 
-            className="space-y-6"
-          >
-            {/* Name Input */}
-            <div className="form-control">
-              <label className="label">
-                <span className="label-text text-gray-700 font-semibold flex items-center gap-2">
-                  <FaUser className="text-[#5bbb7b]" />
+    <section>
+      <div className="flex bg-white items-center justify-center px-4 py-10 sm:px-6 sm:py-16 lg:px-8 lg:py-24">
+        <div className="xl:mx-auto xl:w-full shadow-md p-8 xl:max-w-sm 2xl:max-w-md rounded-lg">
+          <div className="mb-2 flex justify-center"></div>
+          <h2 className="text-center text-2xl font-bold leading-tight text-black">
+            Create your account
+          </h2>
+          <p className="mt-2 text-center text-sm text-gray-600">
+            Already have an account?{' '}
+            <Link 
+              to="/login"
+              className="font-semibold text-black hover:underline"
+            >
+              Sign in here
+            </Link>
+          </p>
+          <form className="mt-8" onSubmit={handleSubmit}>
+            <div className="space-y-5">
+              <div>
+                <label className="text-base font-medium text-gray-900">
                   Full Name
-                </span>
-              </label>
-              <input
-                type="text"
-                name="name"
-                placeholder="Enter your full name"
-                className="input input-bordered w-full bg-white/70 border-gray-300 focus:border-[#5bbb7b] focus:ring-2 focus:ring-[#5bbb7b] focus:ring-opacity-30 transition-all duration-300 hover:bg-white"
-                value={formData.name}
-                onChange={handleChange}
-                required
-              />
-            </div>
-
-            {/* Email Input */}
-            <div className="form-control">
-              <label className="label">
-                <span className="label-text text-gray-700 font-semibold flex items-center gap-2">
-                  <FaEnvelope className="text-[#5bbb7b]" />
-                  Email Address
-                </span>
-              </label>
-              <input
-                type="email"
-                name="email"
-                placeholder="your.email@example.com"
-                className="input input-bordered w-full bg-white/70 border-gray-300 focus:border-[#5bbb7b] focus:ring-2 focus:ring-[#5bbb7b] focus:ring-opacity-30 transition-all duration-300 hover:bg-white"
-                value={formData.email}
-                onChange={handleChange}
-                required
-              />
-            </div>
-
-            {/* Photo URL Input */}
-            <div className="form-control">
-              <label className="label">
-                <span className="label-text text-gray-700 font-semibold flex items-center gap-2">
-                  <FaImage className="text-[#5bbb7b]" />
-                  Profile Photo URL
-                </span>
-              </label>
-              <input
-                type="url"
-                name="photoURL"
-                placeholder="https://example.com/photo.jpg"
-                className="input input-bordered w-full bg-white/70 border-gray-300 focus:border-[#5bbb7b] focus:ring-2 focus:ring-[#5bbb7b] focus:ring-opacity-30 transition-all duration-300 hover:bg-white"
-                value={formData.photoURL}
-                onChange={handleChange}
-              />
-            </div>
-
-            {/* Password Input */}
-            <div className="form-control">
-              <label className="label">
-                <span className="label-text text-gray-700 font-semibold flex items-center gap-2">
-                  <FaLock className="text-[#5bbb7b]" />
+                </label>
+                <div className="mt-2">
+                  <input
+                    type="text"
+                    name="name"
+                    placeholder="Enter your full name"
+                    value={formData.name}
+                    onChange={handleChange}
+                    className="flex h-10 w-full rounded-md border border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
+                    required
+                  />
+                </div>
+              </div>
+              <div>
+                <label className="text-base font-medium text-gray-900">
+                  Email address
+                </label>
+                <div className="mt-2">
+                  <input
+                    type="email"
+                    name="email"
+                    placeholder="your.email@example.com"
+                    value={formData.email}
+                    onChange={handleChange}
+                    className="flex h-10 w-full rounded-md border border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
+                    required
+                  />
+                </div>
+              </div>
+              <div>
+                <label className="text-base font-medium text-gray-900">
+                  Profile Photo URL (Optional)
+                </label>
+                <div className="mt-2">
+                  <input
+                    type="url"
+                    name="photoURL"
+                    placeholder="https://example.com/photo.jpg"
+                    value={formData.photoURL}
+                    onChange={handleChange}
+                    className="flex h-10 w-full rounded-md border border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
+                  />
+                </div>
+              </div>
+              <div>
+                <label className="text-base font-medium text-gray-900">
                   Password
-                </span>
-              </label>
-              <div className="relative">
-                <input
-                  type={showPassword ? "text" : "password"}
-                  name="password"
-                  placeholder="Create a strong password"
-                  className="input input-bordered w-full bg-white/70 border-gray-300 focus:border-[#5bbb7b] focus:ring-2 focus:ring-[#5bbb7b] focus:ring-opacity-30 transition-all duration-300 hover:bg-white pr-12"
-                  value={formData.password}
-                  onChange={handleChange}
-                  required
-                />
+                </label>
+                <div className="mt-2">
+                  <input
+                    type="password"
+                    name="password"
+                    placeholder="Create a strong password"
+                    value={formData.password}
+                    onChange={handleChange}
+                    className="flex h-10 w-full rounded-md border border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
+                    required
+                  />
+                </div>
+                <p className="mt-1 text-xs text-gray-500">
+                  Must include uppercase, lowercase, and be at least 6 characters
+                </p>
+              </div>
+              <div>
                 <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-[#5bbb7b] transition-colors"
+                  className="inline-flex w-full items-center justify-center rounded-md bg-black px-3.5 py-2.5 font-semibold leading-7 text-white hover:bg-black/80"
+                  type="submit"
                 >
-                  {showPassword ? <FaEyeSlash /> : <FaEye />}
+                  Create Account
                 </button>
               </div>
-              <label className="label">
-                <span className="label-text-alt text-gray-500 text-xs">
-                  Must include uppercase, lowercase, and be at least 6 characters
-                </span>
-              </label>
             </div>
-
-            {/* Register Button */}
-            <motion.div 
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              className="form-control mt-8"
+          </form>
+          <div className="mt-3 space-y-3">
+            <button
+              onClick={handleGoogleLogin}
+              className="relative inline-flex w-full items-center justify-center rounded-md border border-gray-400 bg-white px-3.5 py-2.5 font-semibold text-gray-700 transition-all duration-200 hover:bg-gray-100 hover:text-black focus:bg-gray-100 focus:text-black focus:outline-none"
+              type="button"
             >
-              <button 
-                type="submit" 
-                className="btn bg-gradient-to-r from-[#5bbb7b] to-[#4aa66a] hover:from-[#4aa66a] hover:to-[#3d9558] text-white border-0 w-full font-semibold text-lg h-14 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
-              >
-                Create Account
-              </button>
-            </motion.div>
-          </motion.form>
-
-          {/* Divider */}
-          <div className="divider my-8 text-gray-500 font-medium">OR</div>
-
-          {/* Google Login Button */}
-          <motion.button
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-            onClick={handleGoogleLogin}
-            className="btn btn-outline w-full border-2 border-gray-300 hover:bg-gray-50 hover:border-[#5bbb7b] gap-3 h-14 rounded-xl text-base font-medium transition-all duration-300"
-          >
-            <FaGoogle className="text-xl text-red-500" />
-            <span className="text-gray-700">Continue with Google</span>
-          </motion.button>
-
-          {/* Login Link */}
-          <motion.div 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.6, duration: 0.6 }}
-            className="text-center mt-8 pt-6 border-t border-gray-200"
-          >
-            <p className="text-gray-600 text-base">
-              Already have an account?{' '}
-              <Link 
-                to="/login" 
-                className="text-[#5bbb7b] font-semibold hover:text-[#4aa66a] transition-colors duration-300 hover:underline"
-              >
-                Sign In
-              </Link>
-            </p>
-          </motion.div>
-        </motion.div>
-
-        {/* Terms */}
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.8, duration: 0.6 }}
-          className="text-center mt-8"
-        >
-          <p className="text-sm text-white/80 leading-relaxed">
-            By signing up, you agree to our{' '}
-            <a href="#" className="underline hover:text-white transition-colors">Terms of Service</a>
-            {' '}and{' '}
-            <a href="#" className="underline hover:text-white transition-colors">Privacy Policy</a>
-          </p>
-        </motion.div>
+              <span className="mr-2 inline-block">
+                <svg
+                  fill="currentColor"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-6 w-6 text-rose-500"
+                >
+                  <path d="M20.283 10.356h-8.327v3.451h4.792c-.446 2.193-2.313 3.453-4.792 3.453a5.27 5.27 0 0 1-5.279-5.28 5.27 5.27 0 0 1 5.279-5.279c1.259 0 2.397.447 3.29 1.178l2.6-2.599c-1.584-1.381-3.615-2.233-5.89-2.233a8.908 8.908 0 0 0-8.934 8.934 8.907 8.907 0 0 0 8.934 8.934c4.467 0 8.529-3.249 8.529-8.934 0-.528-.081-1.097-.202-1.625z"></path>
+                </svg>
+              </span>
+              Sign up with Google
+            </button>
+          </div>
+        </div>
       </div>
-    </div>
+    </section>
   );
 };
 

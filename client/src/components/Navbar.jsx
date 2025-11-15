@@ -26,7 +26,6 @@ const Navbar = () => {
     <nav className="bg-[#1f4b3f] text-white sticky top-0 z-50 shadow-2xl border-b border-[#2d6b57]/20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
-          {/* Logo Section - Professional Design */}
           <div className="flex items-center">
             <div className="flex-shrink-0">
               <Link to="/" className="flex items-center gap-3 group">
@@ -43,7 +42,6 @@ const Navbar = () => {
             </div>
           </div>
 
-          {/* Desktop Navigation Menu */}
           <div className="hidden lg:block">
             <div className="ml-10 flex items-center space-x-2">
               <NavLink 
@@ -117,9 +115,7 @@ const Navbar = () => {
             </div>
           </div>
 
-          {/* Right Side Actions */}
           <div className="hidden lg:flex items-center space-x-4">
-            {/* Search Icon */}
             <button className="p-3 rounded-xl text-white hover:bg-[#2d6b57] hover:shadow-lg transition-all duration-300 hover:scale-110 relative group">
               <FiSearch className="w-5 h-5" />
               <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white text-xs py-1 px-2 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300">
@@ -212,7 +208,6 @@ const Navbar = () => {
             )}
           </div>
 
-          {/* Mobile Menu Button */}
           <div className="lg:hidden">
             <button
               onClick={toggleMenu}
@@ -223,7 +218,6 @@ const Navbar = () => {
           </div>
         </div>
 
-        {/* Mobile Menu */}
         {isOpen && (
           <div className="lg:hidden absolute top-full left-0 right-0 bg-white shadow-2xl rounded-b-2xl border-t border-gray-100 z-40">
             <div className="px-6 py-4 space-y-2">

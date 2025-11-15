@@ -3,7 +3,6 @@ import { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import toast from 'react-hot-toast';
-import { FaGoogle } from 'react-icons/fa';
 
 const Login = () => {
   const { loginUser, googleLogin } = useAuth();
@@ -16,7 +15,6 @@ const Login = () => {
     password: ''
   });
 
-  // Handle input change
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -24,7 +22,6 @@ const Login = () => {
     });
   };
 
-  // Handle form submit for email/password login
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -45,7 +42,6 @@ const Login = () => {
       });
   };
 
-  // Handle Google login
   const handleGoogleLogin = () => {
     googleLogin()
       .then(() => {
@@ -59,106 +55,96 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-base-200 to-base-300 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="w-full max-w-md">
-        {/* Card Container */}
-        <div className="card bg-base-100 shadow-2xl border border-base-300 hover:shadow-primary/20 transition-shadow duration-300">
-          <div className="card-body p-8">
-            {/* Header */}
-            <div className="text-center mb-8">
-              <h2 className="text-4xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-                Welcome Back
-              </h2>
-              <p className="text-base-content/60 mt-2">
-                Login to access your account
-              </p>
-            </div>
-
-            {/* Login Form */}
-            <form onSubmit={handleSubmit} className="space-y-4">
-              {/* Email Input */}
-              <div className="form-control">
-                <label className="label">
-                  <span className="label-text font-semibold">Email Address</span>
+    <section>
+      <div className="flex bg-white items-center justify-center px-4 py-10 sm:px-6 sm:py-16 lg:px-8 lg:py-24">
+        <div className="xl:mx-auto xl:w-full shadow-md p-8 xl:max-w-sm 2xl:max-w-md rounded-lg">
+          <div className="mb-2 flex justify-center"></div>
+          <h2 className="text-center text-2xl font-bold leading-tight text-black">
+            Sign in to your account
+          </h2>
+          <p className="mt-2 text-center text-sm text-gray-600">
+            Don't have an account?{' '}
+            <Link 
+              to="/register"
+              className="font-semibold text-black hover:underline"
+            >
+              Create a free account
+            </Link>
+          </p>
+          <form className="mt-8" onSubmit={handleSubmit}>
+            <div className="space-y-5">
+              <div>
+                <label className="text-base font-medium text-gray-900">
+                  Email address
                 </label>
-                <input
-                  type="email"
-                  name="email"
-                  placeholder="your.email@example.com"
-                  className="input input-bordered input-primary w-full focus:input-primary"
-                  value={formData.email}
-                  onChange={handleChange}
-                  required
-                />
+                <div className="mt-2">
+                  <input
+                    type="email"
+                    name="email"
+                    placeholder="Email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    className="flex h-10 w-full rounded-md border border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
+                    required
+                  />
+                </div>
               </div>
-
-              {/* Password Input */}
-              <div className="form-control">
-                <label className="label">
-                  <span className="label-text font-semibold">Password</span>
-                </label>
-                <input
-                  type="password"
-                  name="password"
-                  placeholder="Enter your password"
-                  className="input input-bordered input-primary w-full focus:input-primary"
-                  value={formData.password}
-                  onChange={handleChange}
-                  required
-                />
-                <label className="label">
-                  <a href="#" className="label-text-alt link link-hover link-primary">
+              <div>
+                <div className="flex items-center justify-between">
+                  <label className="text-base font-medium text-gray-900">
+                    Password
+                  </label>
+                  <a
+                    className="text-sm font-semibold text-black hover:underline"
+                    href="#"
+                  >
                     Forgot password?
                   </a>
-                </label>
+                </div>
+                <div className="mt-2">
+                  <input
+                    type="password"
+                    name="password"
+                    placeholder="Password"
+                    value={formData.password}
+                    onChange={handleChange}
+                    className="flex h-10 w-full rounded-md border border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
+                    required
+                  />
+                </div>
               </div>
-
-              {/* Login Button */}
-              <div className="form-control mt-6">
-                <button 
-                  type="submit" 
-                  className="btn btn-primary w-full text-white font-semibold"
+              <div>
+                <button
+                  className="inline-flex w-full items-center justify-center rounded-md bg-black px-3.5 py-2.5 font-semibold leading-7 text-white hover:bg-black/80"
+                  type="submit"
                 >
-                  Login
+                  Get started
                 </button>
               </div>
-            </form>
-
-            {/* Divider */}
-            <div className="divider my-6">OR</div>
-
-            {/* Google Login Button */}
+            </div>
+          </form>
+          <div className="mt-3 space-y-3">
             <button
               onClick={handleGoogleLogin}
-              className="btn btn-outline btn-primary w-full gap-2 hover:scale-105 transition-transform"
+              className="relative inline-flex w-full items-center justify-center rounded-md border border-gray-400 bg-white px-3.5 py-2.5 font-semibold text-gray-700 transition-all duration-200 hover:bg-gray-100 hover:text-black focus:bg-gray-100 focus:text-black focus:outline-none"
+              type="button"
             >
-              <FaGoogle className="text-xl" />
-              Continue with Google
-            </button>
-
-            {/* Register Link */}
-            <div className="text-center mt-6 pt-4 border-t border-base-300">
-              <p className="text-base-content/70">
-                Don't have an account?{' '}
-                <Link 
-                  to="/register" 
-                  className="link link-primary font-semibold hover:text-primary-focus"
+              <span className="mr-2 inline-block">
+                <svg
+                  fill="currentColor"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-6 w-6 text-rose-500"
                 >
-                  Create Account
-                </Link>
-              </p>
-            </div>
+                  <path d="M20.283 10.356h-8.327v3.451h4.792c-.446 2.193-2.313 3.453-4.792 3.453a5.27 5.27 0 0 1-5.279-5.28 5.27 5.27 0 0 1 5.279-5.279c1.259 0 2.397.447 3.29 1.178l2.6-2.599c-1.584-1.381-3.615-2.233-5.89-2.233a8.908 8.908 0 0 0-8.934 8.934 8.907 8.907 0 0 0 8.934 8.934c4.467 0 8.529-3.249 8.529-8.934 0-.528-.081-1.097-.202-1.625z"></path>
+                </svg>
+              </span>
+              Sign in with Google
+            </button>
           </div>
         </div>
-
-        {/* Additional Info */}
-        <div className="text-center mt-6">
-          <p className="text-sm text-base-content/50">
-            By continuing, you agree to our Terms of Service and Privacy Policy
-          </p>
-        </div>
       </div>
-    </div>
+    </section>
   );
 };
 
